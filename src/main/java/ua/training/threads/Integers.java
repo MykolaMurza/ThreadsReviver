@@ -2,20 +2,23 @@ package ua.training.threads;
 
 public class Integers implements Runnable {
     private String num = "";
-    private boolean isRuning = true;
+    private boolean isRunning = true;
 
     @Override
     public void run() {
-        while (isRuning) {
+        while (isRunning) {
             try {
                 Thread.sleep(10);
-            } catch (InterruptedException e) {e.printStackTrace();}
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             if (!num.contentEquals("")) {
-                System.out.println("(Integer) - i gaot an " + Integer.parseInt(num) + "!");
+                System.out.println("(Integer) - i got an " + Integer.parseInt(num) + "!");
                 num = "";
             }
         }
+
         System.out.println("Integer - stop!");
     }
 
@@ -28,7 +31,6 @@ public class Integers implements Runnable {
     }
 
     public void end() {
-        this.isRuning = false;
+        this.isRunning = false;
     }
-
 }

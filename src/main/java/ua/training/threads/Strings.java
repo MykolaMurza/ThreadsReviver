@@ -2,20 +2,23 @@ package ua.training.threads;
 
 public class Strings implements Runnable {
     private String str = "";
-    private boolean isRuning = true;
+    private boolean isRunning = true;
 
     @Override
     public void run() {
-        while (isRuning) {
+        while (isRunning) {
             try {
                 Thread.sleep(10);
-            } catch (InterruptedException e) {e.printStackTrace();}
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             if (!str.contentEquals("")) {
-                System.out.println("(String) - i gaot '" + str + "'!");
+                System.out.println("(String) - i got '" + str + "'!");
                 str = "";
             }
         }
+
         System.out.println("String - stop!");
     }
 
@@ -28,6 +31,6 @@ public class Strings implements Runnable {
     }
 
     public void end() {
-        this.isRuning = false;
+        this.isRunning = false;
     }
 }

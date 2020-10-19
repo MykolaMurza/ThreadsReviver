@@ -3,51 +3,51 @@ package ua.training.threads;
 import java.util.Scanner;
 
 public class App {
-    public static Strings s = new Strings();
-    public static Integers i = new Integers();
-    public static Thread ts = new Thread(s);
-    public static Thread ti = new Thread(i);
-    public static Scanner scn = new Scanner(System.in);
+    public static Strings string = new Strings();
+    public static Integers integer = new Integers();
+    public static Thread threadString = new Thread(string);
+    public static Thread threadInteger = new Thread(integer);
+    public static Scanner scan = new Scanner(System.in);
     public static String com = "";
     public static boolean isRunning = true;
     public static boolean autoRevive = false;
 
     public static void main(String[] args) {
-        ts.start();
-        ti.start();
-        System.out.println("Program starts...\nType /help to see all commands");
+        threadString.start();
+        threadInteger.start();
+        System.out.println("Program started...\nType /help to see all commands");
+
         while (isRunning) {
-            scn = new Scanner(System.in);
+            scan = new Scanner(System.in);
             System.out.println("----------------------||----------------------");
             System.out.print("Enter command: ");
-            com = scn.next();
+            com = scan.next();
             checkCommand();
             autoRevive();
         }
-        s.end();
-        i.end();
-        scn.close();
+
+        string.end();
+        integer.end();
+        scan.close();
         System.out.println("Exit!");
     }
 
     private static void autoRevive() {
         if (autoRevive) {
-            if (!ts.isAlive()) {
+            if (!threadString.isAlive()) {
                 revive("String");
             }
-            if (!ti.isAlive()) {
+            if (!threadInteger.isAlive()) {
                 revive("Integer");
             }
         }
     }
 
-    public static void checkCommand() {
+    private static void checkCommand() {
         switch (com.toLowerCase()) {
-
             case "/exit":
                 isRunning = false;
                 break;
-
             case "/help":
                 System.out.println("/help - list of all commands");
                 System.out.println("/exit - exit the program");
@@ -57,78 +57,70 @@ public class App {
                 System.out.println("/revive <'Integer','String'> - restarts named Thread");
                 System.out.println("/auto_revive - switches auto revive thread option");
                 break;
-
             case "/int":
-                if (!ti.isAlive()) {
+                if (!threadInteger.isAlive()) {
                     System.out.println("ERROR - Integer thread is dead!");
                     break;
                 }
-                String iarg = scn.next();
-                i.setNum(iarg);
-                hold(100);
+                String integerArg = scan.next();
+                integer.setNum(integerArg);
+                hold(50);
                 break;
-
             case "/str":
-                if (!ts.isAlive()) {
+                if (!threadString.isAlive()) {
                     System.out.println("ERROR - String thread is dead!");
                     break;
                 }
-                scn.skip(" ");
-                String   sarg = scn.nextLine();
-                s.setStr(sarg);
-                hold(100);
+                scan.skip(" ");
+                String stringArg = scan.nextLine();
+                string.setStr(stringArg);
+                hold(50);
                 break;
-
             case "/stats":
-                System.out.println("Integer thread alive status: " + ti.isAlive());
-                System.out.println("String thread alive status: " + ts.isAlive());
+                System.out.println("Integer thread alive status: " + threadInteger.isAlive());
+                System.out.println("String thread alive status: " + threadString.isAlive());
                 break;
-
             case "/revive":
-                revive(scn.next());
+                revive(scan.next());
                 break;
-
             case "/auto_revive":
                 autoRevive = !autoRevive;
                 System.out.println("Auto Revive otipon is now: " + autoRevive);
                 break;
-
             default:
                 System.out.println("ERROR - Unknown command!");
                 break;
         }
     }
 
-    public static void revive(String arg) {
+    private static void revive(String arg) {
         switch (arg.toLowerCase()) {
             case "integer":
-                if (ti.isAlive()) {
+                if (threadInteger.isAlive()) {
                     System.out.println("ERROR - Integer thread is still alive!");
                     break;
                 }
-                i = new Integers();
-                ti = new Thread(i);
-                ti.start();
+                integer = new Integers();
+                threadInteger = new Thread(integer);
+                threadInteger.start();
                 hold(100);
-                if (ts.isAlive()) {
+                if (threadString.isAlive()) {
                     System.out.println("Integer thread is revived!");
                 }
                 break;
-
             case "string":
-                if (ts.isAlive()) {
+                if (threadString.isAlive()) {
                     System.out.println("ERROR - String thread is still alive!");
                     break;
                 }
-                s = new Strings();
-                ts = new Thread(s);
-                ts.start();
+                string = new Strings();
+                threadString = new Thread(string);
+                threadString.start();
                 hold(100);
-                if (ts.isAlive()) {
+                if (threadString.isAlive()) {
                     System.out.println("String thread is revived!");
                 }
                 break;
-
             default:
                 System.out.println("ERROR - unknown thread!");
                 break;
